@@ -43,7 +43,16 @@
 .form-actions{grid-column:1/-1;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
 .form-actions button{cursor:pointer;font-family:inherit}
 .form-privacy{color:var(--mut2);font-size:11px;line-height:1.55;max-width:520px}
-@media(max-width:760px){.investment-grid,.contact-form{grid-template-columns:1fr}.form-field.full,.form-actions{grid-column:auto}.investment-intro{margin-top:0}}
+.case-live-card{position:relative;min-height:460px;border:1px solid var(--line);border-radius:28px;padding:42px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:radial-gradient(700px 420px at 75% 15%,rgba(34,211,238,.13),transparent 62%),radial-gradient(600px 400px at 10% 90%,rgba(139,92,246,.14),transparent 66%),linear-gradient(150deg,rgba(16,20,34,.84),rgba(7,9,15,.94));box-shadow:0 45px 120px rgba(0,0,0,.38);transition:transform .2s ease,border-color .2s ease}
+.case-live-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.22)}
+.case-live-card::before{content:"LIVE SITE";position:absolute;top:26px;right:28px;padding:8px 11px;border:1px solid rgba(34,211,238,.24);border-radius:999px;color:rgba(197,247,255,.86);background:rgba(34,211,238,.06);font-size:9px;font-weight:600;letter-spacing:.16em}
+.case-live-kicker{color:var(--mut2);font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px}
+.case-live-brand{font-family:Cinzel,serif;font-size:clamp(34px,4vw,54px);letter-spacing:.06em;line-height:1.04;margin-bottom:13px}
+.case-live-url{font-size:14px;color:#a8f3ff;margin-bottom:22px}
+.case-live-card p{max-width:560px;margin:0 0 26px;color:var(--mut);font-size:14px;line-height:1.7}
+.case-live-tags{display:flex;gap:8px;flex-wrap:wrap}
+.case-live-tags span{padding:8px 10px;border:1px solid rgba(255,255,255,.09);border-radius:999px;background:rgba(255,255,255,.025);color:rgba(235,240,255,.66);font-size:10px;letter-spacing:.04em}
+@media(max-width:760px){.investment-grid,.contact-form{grid-template-columns:1fr}.form-field.full,.form-actions{grid-column:auto}.investment-intro{margin-top:0}.case-live-card{min-height:390px;padding:30px}}
 </style>`;
         html = html.replace('</head>', extraStyles + '</head>');
 
@@ -90,6 +99,22 @@
 `;
         if(html.includes(focusMarker)){
           html = html.replace(focusMarker, pricingSection + focusMarker.replace('06 / Initial focus','07 / Initial focus'));
+        }
+
+        const browserStartToken = '<a class="browser reveal" href="https://sandelduggal.com/"';
+        const browserStart = html.indexOf(browserStartToken);
+        if(browserStart !== -1){
+          const browserEnd = html.indexOf('</a>', browserStart);
+          if(browserEnd !== -1){
+            const honestCasePanel = `<a class="case-live-card reveal" href="https://sandelduggal.com/" target="_blank" rel="noopener" aria-label="Open the actual live Sandel Duggal website">
+          <div class="case-live-kicker">Flagship implementation · Actual live website</div>
+          <div class="case-live-brand">SANDEL DUGGAL</div>
+          <div class="case-live-url">sandelduggal.com <span aria-hidden="true">↗</span></div>
+          <p>Open the actual Sandel Duggal website to see the work itself. This case-study panel intentionally does not simulate or reproduce the site's interface.</p>
+          <div class="case-live-tags"><span>Brand system</span><span>Digital experience</span><span>Patient navigation</span><span>Search architecture</span><span>Practice technology</span></div>
+        </a>`;
+            html = html.slice(0,browserStart) + honestCasePanel + html.slice(browserEnd + 4);
+          }
         }
 
         const contactLead = 'Whether the starting point is a website, a rebrand, patient-facing materials or a complete practice transformation, Asclethius can design the pieces as one system.</p>\n          <div class="cta-actions">';
