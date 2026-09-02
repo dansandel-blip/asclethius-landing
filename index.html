@@ -3,308 +3,1021 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Asclethius — Coming Soon</title>
+<meta name="theme-color" content="#05060a">
+<title>Asclethius — Practice Design for Modern Medicine</title>
+<meta name="description" content="Asclethius redesigns the medical practice as a complete patient-facing system — brand, website, patient experience, search, analytics, AI and automation. Built from inside medicine.">
+<meta property="og:title" content="Asclethius — Practice Design for Modern Medicine">
+<meta property="og:description" content="The modern medical practice, designed from the inside out.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.asclethius.com/">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --bg:#05060a;
-  --fg:#eef2ff;
-  --mut:rgba(230,236,255,.7);
+  --bg2:#090b12;
+  --panel:rgba(13,16,27,.72);
+  --panel2:rgba(8,11,18,.86);
+  --fg:#f2f5ff;
+  --mut:rgba(229,235,255,.70);
+  --mut2:rgba(229,235,255,.48);
+  --line:rgba(255,255,255,.11);
+  --line2:rgba(255,255,255,.17);
   --a1:#8b5cf6;
   --a2:#22d3ee;
+  --max:1180px;
   --px:0px;
   --py:0px;
 }
 
 *{box-sizing:border-box}
-html,body{height:100%}
-
+html{scroll-behavior:smooth;background:var(--bg)}
 body{
   margin:0;
-  font-family:Inter,system-ui,sans-serif;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   color:var(--fg);
   background:
-    radial-gradient(1400px 900px at 18% 12%, rgba(139,92,246,.22), transparent 60%),
-    radial-gradient(1100px 700px at 85% 18%, rgba(34,211,238,.18), transparent 55%),
-    radial-gradient(1200px 900px at 50% 95%, rgba(255,255,255,.06), transparent 65%),
+    radial-gradient(1300px 900px at 12% 4%,rgba(139,92,246,.16),transparent 62%),
+    radial-gradient(1100px 800px at 90% 10%,rgba(34,211,238,.13),transparent 60%),
+    radial-gradient(1100px 800px at 50% 58%,rgba(255,255,255,.025),transparent 70%),
     var(--bg);
-  overflow:hidden;
+  min-height:100%;
+  overflow-x:hidden;
 }
 
-/* starfield canvas (dots + connecting lines) */
+::selection{background:rgba(34,211,238,.25);color:#fff}
+a{color:inherit;text-decoration:none}
+button,a{ -webkit-tap-highlight-color:transparent }
+
 #stars{
-  position:fixed; inset:0;
-  width:100%; height:100%;
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
   z-index:0;
+  pointer-events:none;
+  opacity:.82;
 }
 
-/* subtle geometric grid (space “panel” feel) */
 .grid{
-  position:fixed; inset:0;
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
   background:
-    linear-gradient(rgba(255,255,255,.10) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.10) 1px, transparent 1px);
-  background-size:90px 90px;
-  opacity:.12;
-  transform:translate(calc(var(--px)*-0.25), calc(var(--py)*-0.20));
-  z-index:1;
+    linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
+  background-size:96px 96px;
+  opacity:.055;
+  transform:translate(calc(var(--px)*-0.10),calc(var(--py)*-0.08));
 }
 
-/* faint orbital rings */
-.rings{
-  position:fixed; inset:-18%;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(34,211,238,.26) 0 2px, transparent 2px 140px),
-    radial-gradient(circle at 50% 45%, rgba(139,92,246,.22) 0 2px, transparent 2px 280px),
-    radial-gradient(circle at 50% 45%, rgba(255,255,255,.14) 0 2px, transparent 2px 420px);
-  animation:spin 60s linear infinite;
-  opacity:.22;
-  z-index:1;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* deep glow nebula */
 .glow{
-  position:absolute;
-  width:900px; height:900px;
-  left:50%; top:50%;
-  transform:translate(calc(-50% + var(--px)*0.6), calc(-50% + var(--py)*0.6));
-  background:radial-gradient(circle,
-    rgba(139,92,246,.35),
-    rgba(34,211,238,.25),
-    transparent 68%);
-  filter:blur(85px);
-  opacity:.32;
-  z-index:2;
+  position:fixed;
+  left:50%;
+  top:26%;
+  width:min(980px,92vw);
+  aspect-ratio:1;
+  transform:translate(calc(-50% + var(--px)*.22),calc(-50% + var(--py)*.22));
+  background:radial-gradient(circle,rgba(139,92,246,.20),rgba(34,211,238,.11),transparent 68%);
+  filter:blur(90px);
+  opacity:.72;
+  z-index:0;
   pointer-events:none;
 }
 
-/* layout */
-.wrap{
+.site{
   position:relative;
-  z-index:3;
-  min-height:100%;
-  padding:40px;
-  display:flex;
-  flex-direction:column;
+  z-index:2;
 }
 
-header{
+.container{
+  width:min(var(--max),calc(100% - 48px));
+  margin:0 auto;
+}
+
+.nav-shell{
+  position:sticky;
+  top:0;
+  z-index:20;
+  border-bottom:1px solid transparent;
+  background:linear-gradient(to bottom,rgba(5,6,10,.88),rgba(5,6,10,.62));
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+.nav{
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+}
+
+.brand{
   font-family:Cinzel,serif;
-  letter-spacing:.14em;
+  letter-spacing:.15em;
+  font-size:17px;
+  white-space:nowrap;
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:26px;
+  color:var(--mut);
+  font-size:13px;
+}
+.nav-links a{transition:color .2s ease}
+.nav-links a:hover{color:#fff}
+
+.nav-cta{
+  padding:10px 15px;
+  border:1px solid var(--line2);
+  border-radius:999px;
+  color:#fff!important;
+  background:rgba(255,255,255,.035);
+}
+
+.menu-btn{
+  display:none;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.03);
+  color:#fff;
   font-size:18px;
-  opacity:.95;
 }
 
 .hero{
-  margin:auto 0;
-  max-width:920px;
-  padding:46px;
-  background:rgba(10,12,20,.65);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:28px;
-  box-shadow:0 50px 140px rgba(0,0,0,.72);
-  backdrop-filter:blur(12px);
+  min-height:calc(100svh - 78px);
+  display:grid;
+  align-items:center;
+  padding:86px 0 74px;
 }
 
-.badge{
-  display:inline-flex;
+.hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.18fr) minmax(340px,.82fr);
+  gap:70px;
   align-items:center;
-  gap:10px;
-  font-size:13px;
-  opacity:.85;
 }
-.badge::before{
+
+.eyebrow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:rgba(235,240,255,.78);
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  font-size:11px;
+  font-weight:600;
+}
+.eyebrow::before{
   content:"";
-  width:10px;height:10px;
+  width:8px;
+  height:8px;
   border-radius:50%;
   background:linear-gradient(135deg,var(--a2),var(--a1));
-  box-shadow:0 0 0 7px rgba(34,211,238,.16);
+  box-shadow:0 0 0 7px rgba(34,211,238,.08);
 }
 
-h1{
+.hero h1{
   font-family:Cinzel,serif;
-  font-size:clamp(40px,4vw,66px);
-  line-height:1.05;
-  margin:20px 0 12px;
+  font-size:clamp(52px,6.6vw,92px);
+  line-height:.98;
+  font-weight:500;
+  letter-spacing:-.025em;
+  margin:26px 0 26px;
+  max-width:900px;
 }
-
-h1 span{
-  background:linear-gradient(90deg,#fff,var(--a2),var(--a1),#fff);
+.hero h1 span{
+  display:block;
+  background:linear-gradient(95deg,#fff 0%,#d8fbff 30%,#81eaff 52%,#baa6ff 78%,#fff 100%);
+  background-size:200% 100%;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  background-size:200% 100%;
-  animation:shimmer 3.4s linear infinite;
+  animation:shimmer 8s linear infinite;
 }
-@keyframes shimmer{to{background-position:200%}}
+@keyframes shimmer{to{background-position:200% 0}}
 
-p{
+.hero-lede{
   color:var(--mut);
-  max-width:64ch;
-  line-height:1.65;
+  font-size:clamp(17px,1.65vw,21px);
+  line-height:1.68;
+  max-width:760px;
+  margin:0;
 }
 
-form{
+.hero-lede strong{color:#fff;font-weight:500}
+
+.hero-actions{
   display:flex;
   gap:12px;
-  margin-top:22px;
   flex-wrap:wrap;
+  margin-top:34px;
 }
 
-input{
-  flex:1 1 260px;
-  height:52px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.18);
-  background:rgba(0,0,0,.30);
-  color:var(--fg);
-  padding:0 14px;
-  outline:none;
-}
-input:focus{
-  border-color: rgba(34,211,238,.55);
-  box-shadow:0 0 0 6px rgba(34,211,238,.12);
-}
-
-button{
-  height:52px;
+.btn{
+  min-height:52px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
   padding:0 20px;
   border-radius:14px;
-  border:1px solid rgba(255,255,255,.18);
-  background:linear-gradient(135deg,rgba(34,211,238,.35),rgba(139,92,246,.35));
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  transition:transform .15s ease, filter .15s ease;
-}
-button:hover{ transform:translateY(-1px); filter:brightness(1.06); }
-
-footer{
-  margin-top:20px;
+  border:1px solid var(--line2);
   font-size:13px;
-  opacity:.6;
+  font-weight:600;
+  transition:transform .18s ease,filter .18s ease,border-color .18s ease,background .18s ease;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{
+  background:linear-gradient(135deg,rgba(34,211,238,.30),rgba(139,92,246,.30));
+  box-shadow:0 18px 48px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.btn-primary:hover{filter:brightness(1.10);border-color:rgba(255,255,255,.28)}
+.btn-secondary{background:rgba(255,255,255,.035);color:var(--mut)}
+.btn-secondary:hover{color:#fff;background:rgba(255,255,255,.06)}
+
+.hero-note{
+  margin-top:28px;
+  color:var(--mut2);
+  font-size:12px;
+  letter-spacing:.035em;
 }
 
-@media (max-width:560px){
-  body{ overflow:auto; }
-  .wrap{ padding:22px; }
-  .hero{ padding:30px 20px; }
+.system-card{
+  position:relative;
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:30px;
+  background:linear-gradient(155deg,rgba(16,20,34,.80),rgba(7,9,15,.90));
+  box-shadow:0 50px 140px rgba(0,0,0,.45);
+  overflow:hidden;
+}
+.system-card::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  background:linear-gradient(130deg,rgba(34,211,238,.12),transparent 35%,transparent 64%,rgba(139,92,246,.15));
+  pointer-events:none;
+}
+
+.system-kicker{
+  color:var(--mut2);
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  font-size:10px;
+  margin-bottom:24px;
+}
+.system-title{
+  font-family:Cinzel,serif;
+  font-size:27px;
+  line-height:1.25;
+  margin:0 0 22px;
+  font-weight:500;
+}
+.system-stack{display:grid;gap:10px}
+.system-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 15px;
+  border-radius:14px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+  font-size:12px;
+  color:rgba(244,247,255,.86);
+}
+.system-row span:last-child{color:var(--mut2);font-size:10px;text-transform:uppercase;letter-spacing:.11em}
+.system-arrow{
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:rgba(34,211,238,.58);
+  font-size:20px;
+}
+.system-outcome{
+  padding:18px;
+  border-radius:16px;
+  border:1px solid rgba(34,211,238,.18);
+  background:linear-gradient(135deg,rgba(34,211,238,.08),rgba(139,92,246,.08));
+}
+.system-outcome strong{display:block;font-size:13px;margin-bottom:6px}
+.system-outcome span{font-size:12px;line-height:1.55;color:var(--mut)}
+
+.section{
+  padding:112px 0;
+  border-top:1px solid rgba(255,255,255,.055);
+}
+.section-tight{padding:84px 0}
+
+.section-head{
+  display:grid;
+  grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);
+  gap:70px;
+  align-items:start;
+  margin-bottom:58px;
+}
+.section-label{
+  color:var(--mut2);
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  font-size:10px;
+  font-weight:600;
+  padding-top:10px;
+}
+.section-title{
+  font-family:Cinzel,serif;
+  font-size:clamp(34px,4vw,58px);
+  line-height:1.08;
+  letter-spacing:-.015em;
+  font-weight:500;
+  margin:0 0 22px;
+}
+.section-copy{
+  color:var(--mut);
+  font-size:16px;
+  line-height:1.75;
+  max-width:760px;
+  margin:0;
+}
+.section-copy strong{color:#fff;font-weight:500}
+
+.principle{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.principle-card{
+  min-height:290px;
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:34px;
+  background:linear-gradient(150deg,rgba(255,255,255,.035),rgba(255,255,255,.018));
+}
+.principle-card .num{
+  font-family:Cinzel,serif;
+  color:rgba(34,211,238,.74);
+  font-size:13px;
+  letter-spacing:.12em;
+}
+.principle-card h3{
+  font-family:Cinzel,serif;
+  font-weight:500;
+  font-size:28px;
+  line-height:1.25;
+  margin:50px 0 14px;
+}
+.principle-card p{color:var(--mut);line-height:1.7;margin:0;font-size:14px}
+
+.services{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.service{
+  position:relative;
+  min-height:318px;
+  padding:30px;
+  border-radius:22px;
+  border:1px solid var(--line);
+  background:linear-gradient(150deg,rgba(255,255,255,.04),rgba(255,255,255,.015));
+  overflow:hidden;
+  transition:transform .22s ease,border-color .22s ease,background .22s ease;
+}
+.service:hover{
+  transform:translateY(-4px);
+  border-color:rgba(255,255,255,.19);
+  background:linear-gradient(150deg,rgba(255,255,255,.055),rgba(255,255,255,.022));
+}
+.service::after{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  right:-80px;
+  bottom:-100px;
+  background:radial-gradient(circle,rgba(34,211,238,.09),transparent 68%);
+}
+.service:nth-child(even)::after{background:radial-gradient(circle,rgba(139,92,246,.10),transparent 68%)}
+.service-num{color:var(--mut2);font-size:10px;letter-spacing:.14em}
+.service h3{
+  font-family:Cinzel,serif;
+  font-size:23px;
+  font-weight:500;
+  line-height:1.25;
+  margin:38px 0 15px;
+}
+.service p{color:var(--mut);font-size:13px;line-height:1.65;margin:0}
+.service ul{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:8px;color:rgba(235,240,255,.68);font-size:12px}
+.service li::before{content:"—";margin-right:8px;color:rgba(34,211,238,.58)}
+
+.case{
+  display:grid;
+  grid-template-columns:minmax(0,.87fr) minmax(430px,1.13fr);
+  gap:70px;
+  align-items:center;
+}
+.case-copy .section-title{font-size:clamp(38px,4.7vw,66px)}
+.case-copy p{color:var(--mut);line-height:1.8;font-size:15px}
+.case-points{display:grid;gap:13px;margin:26px 0 32px}
+.case-point{display:flex;gap:13px;align-items:flex-start;color:rgba(238,242,255,.80);font-size:13px;line-height:1.55}
+.case-point::before{content:"";width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--a2),var(--a1));margin-top:7px;flex:0 0 auto}
+
+.browser{
+  border-radius:24px;
+  border:1px solid var(--line2);
+  background:#0a0c12;
+  box-shadow:0 50px 130px rgba(0,0,0,.48);
+  overflow:hidden;
+  transform:perspective(1400px) rotateY(-3deg) rotateX(1deg);
+}
+.browser-top{
+  height:44px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.025);
+}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.20)}
+.urlbar{margin-left:8px;height:24px;flex:1;border-radius:8px;background:rgba(255,255,255,.045);display:flex;align-items:center;padding:0 10px;font-size:9px;color:var(--mut2)}
+.browser-screen{padding:24px;background:linear-gradient(180deg,#f6f2ea,#efeae0);color:#222;min-height:490px}
+.sd-nav{display:flex;justify-content:space-between;align-items:center;font-family:Georgia,serif;font-size:10px;letter-spacing:.10em;padding-bottom:20px;border-bottom:1px solid rgba(30,30,30,.12)}
+.sd-wordmark{font-size:15px;letter-spacing:.07em}
+.sd-links{display:flex;gap:11px;font-family:Inter,sans-serif;font-size:6px;color:#555}
+.sd-hero{padding:52px 10px 36px;text-align:center}
+.sd-kicker{font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:#777;margin-bottom:15px}
+.sd-hero h4{font-family:Georgia,serif;font-weight:400;font-size:34px;line-height:1.08;margin:0 auto 15px;max-width:520px}
+.sd-hero p{font-size:8px;line-height:1.7;color:#666;max-width:400px;margin:0 auto}
+.sd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:20px}
+.sd-tile{height:112px;border-radius:2px;background:linear-gradient(145deg,#d9d3c9,#bdb4a8);position:relative;overflow:hidden}
+.sd-tile:nth-child(2){background:linear-gradient(145deg,#c9bdb0,#8f8174)}
+.sd-tile:nth-child(3){background:linear-gradient(145deg,#d8cbc0,#a19184)}
+.sd-tile:nth-child(4){background:linear-gradient(145deg,#c7c4bb,#938f86)}
+.sd-tile span{position:absolute;left:8px;bottom:8px;color:#fff;font-family:Georgia,serif;font-size:9px;text-shadow:0 1px 8px rgba(0,0,0,.35)}
+.sd-band{display:flex;justify-content:space-between;gap:10px;margin-top:24px;padding-top:18px;border-top:1px solid rgba(30,30,30,.12);font-size:7px;text-transform:uppercase;letter-spacing:.12em;color:#666}
+
+.journey{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  border:1px solid var(--line);
+  border-radius:24px;
+  overflow:hidden;
+  background:rgba(255,255,255,.018);
+}
+.journey-step{
+  min-height:230px;
+  padding:28px 24px;
+  border-right:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+}
+.journey-step:last-child{border-right:0}
+.journey-step span{font-size:9px;letter-spacing:.13em;color:var(--mut2)}
+.journey-step h3{font-family:Cinzel,serif;font-size:19px;font-weight:500;margin:48px 0 10px}
+.journey-step p{color:var(--mut);font-size:12px;line-height:1.6;margin:0}
+
+.physician{
+  display:grid;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  gap:70px;
+  align-items:start;
+}
+.quote{
+  border-left:1px solid rgba(34,211,238,.38);
+  padding-left:28px;
+  font-family:Cinzel,serif;
+  font-size:clamp(28px,3vw,44px);
+  line-height:1.35;
+  font-weight:500;
+  color:rgba(247,249,255,.93);
+}
+.physician-copy{color:var(--mut);line-height:1.8;font-size:15px}
+.physician-copy p{margin-top:0}
+.physician-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.tag{padding:9px 12px;border:1px solid var(--line);border-radius:999px;font-size:10px;color:rgba(237,242,255,.68);background:rgba(255,255,255,.02)}
+
+.process{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+.process-card{padding:28px;border-top:1px solid rgba(34,211,238,.25);background:rgba(255,255,255,.015);min-height:220px}
+.process-card span{font-size:9px;color:var(--mut2);letter-spacing:.15em}
+.process-card h3{font-family:Cinzel,serif;font-weight:500;font-size:20px;margin:42px 0 12px}
+.process-card p{font-size:12px;line-height:1.65;color:var(--mut);margin:0}
+
+.audience{display:flex;flex-wrap:wrap;gap:10px}
+.audience span{padding:12px 15px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.025);color:rgba(238,242,255,.70);font-size:11px}
+
+.cta{
+  padding:72px;
+  border:1px solid var(--line2);
+  border-radius:30px;
+  background:
+    radial-gradient(600px 360px at 10% 0%,rgba(139,92,246,.18),transparent 64%),
+    radial-gradient(600px 360px at 90% 100%,rgba(34,211,238,.14),transparent 64%),
+    rgba(9,11,18,.80);
+  text-align:center;
+  box-shadow:0 50px 120px rgba(0,0,0,.34);
+}
+.cta .eyebrow{justify-content:center}
+.cta h2{font-family:Cinzel,serif;font-weight:500;font-size:clamp(38px,4.8vw,66px);line-height:1.1;margin:28px auto 18px;max-width:850px}
+.cta p{color:var(--mut);font-size:15px;line-height:1.7;max-width:680px;margin:0 auto}
+.cta-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px}
+.contact-note{margin-top:18px!important;color:var(--mut2)!important;font-size:11px!important}
+
+.footer{
+  padding:34px 0 46px;
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.footer-grid{display:flex;align-items:flex-end;justify-content:space-between;gap:30px}
+.footer-brand{font-family:Cinzel,serif;letter-spacing:.15em;font-size:15px}
+.footer-sub{color:var(--mut2);font-size:10px;margin-top:8px}
+.footer-right{text-align:right;color:var(--mut2);font-size:10px;line-height:1.7}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .75s ease,transform .75s ease}
+.reveal.is-visible{opacity:1;transform:none}
+
+@media (max-width:1000px){
+  .hero-grid,.case,.physician{grid-template-columns:1fr;gap:48px}
+  .hero{min-height:auto}
+  .system-card{max-width:680px}
+  .services{grid-template-columns:repeat(2,1fr)}
+  .journey{grid-template-columns:repeat(2,1fr)}
+  .journey-step{border-bottom:1px solid var(--line)}
+  .journey-step:nth-child(2n){border-right:0}
+  .journey-step:last-child{border-bottom:0;border-right:1px solid var(--line)}
+  .process{grid-template-columns:repeat(2,1fr)}
+}
+
+@media (max-width:760px){
+  .container{width:min(var(--max),calc(100% - 32px))}
+  .nav{min-height:68px}
+  .menu-btn{display:block}
+  .nav-links{
+    display:none;
+    position:absolute;
+    top:68px;
+    left:16px;
+    right:16px;
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:rgba(7,9,15,.97);
+    flex-direction:column;
+    align-items:stretch;
+    gap:0;
+    box-shadow:0 26px 80px rgba(0,0,0,.45);
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:12px 6px}
+  .nav-cta{text-align:center;margin-top:8px}
+  .hero{padding:70px 0 64px}
+  .hero h1{font-size:clamp(46px,14vw,72px)}
+  .section{padding:84px 0}
+  .section-head{grid-template-columns:1fr;gap:18px;margin-bottom:42px}
+  .principle,.services{grid-template-columns:1fr}
+  .principle-card{min-height:245px}
+  .browser{transform:none}
+  .sd-links{display:none}
+  .browser-screen{min-height:390px;padding:16px}
+  .sd-hero{padding:36px 4px 24px}
+  .sd-hero h4{font-size:26px}
+  .sd-grid{grid-template-columns:repeat(2,1fr)}
+  .sd-tile{height:92px}
+  .journey{grid-template-columns:1fr}
+  .journey-step{border-right:0!important;border-bottom:1px solid var(--line)!important;min-height:190px}
+  .journey-step:last-child{border-bottom:0!important}
+  .process{grid-template-columns:1fr}
+  .cta{padding:48px 24px}
+  .footer-grid{display:block}
+  .footer-right{text-align:left;margin-top:22px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  #stars{display:none}
+  .reveal{opacity:1;transform:none}
 }
 </style>
 </head>
-
 <body>
-
 <canvas id="stars" aria-hidden="true"></canvas>
 <div class="grid" aria-hidden="true"></div>
-<div class="rings" aria-hidden="true"></div>
+<div class="glow" aria-hidden="true"></div>
 
-<div class="wrap">
-  <div class="glow" aria-hidden="true"></div>
+<div class="site">
+  <div class="nav-shell">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Asclethius home">ASCLETHIUS</a>
+      <button class="menu-btn" type="button" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#what-we-do">What we do</a>
+        <a href="#case-study">Our work</a>
+        <a href="#why">Why Asclethius</a>
+        <a href="#process">Process</a>
+        <a class="nav-cta" href="#contact">Build your practice</a>
+      </nav>
+    </div>
+  </div>
 
-  <header>ASCLETHIUS</header>
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="eyebrow">Ancient wisdom. Modern precision.</div>
+          <h1>The modern medical practice, <span>designed from the inside out.</span></h1>
+          <p class="hero-lede">
+            Asclethius redesigns the medical practice as a complete patient-facing system — from the first Google search to the website, consultation, printed materials, procedure, follow-up and long-term relationship.
+            <strong>Brand. Digital. Patient experience. Technology.</strong>
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#what-we-do">Explore the system <span aria-hidden="true">→</span></a>
+            <a class="btn btn-secondary" href="https://sandelduggal.com/" target="_blank" rel="noopener">See the flagship case <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="hero-note">Physician-led. Built from firsthand experience operating and transforming a medical practice.</div>
+        </div>
 
-  <section class="hero">
-    <div class="badge">Launching soon</div>
+        <aside class="system-card reveal" aria-label="Asclethius practice system">
+          <div class="system-kicker">The Asclethius practice system</div>
+          <h2 class="system-title">One coherent experience instead of disconnected vendors.</h2>
+          <div class="system-stack">
+            <div class="system-row"><span>Brand & identity</span><span>01</span></div>
+            <div class="system-row"><span>Website & digital experience</span><span>02</span></div>
+            <div class="system-row"><span>Patient communications</span><span>03</span></div>
+            <div class="system-row"><span>Search & intelligence</span><span>04</span></div>
+            <div class="system-row"><span>AI & automation</span><span>05</span></div>
+          </div>
+          <div class="system-arrow" aria-hidden="true">↓</div>
+          <div class="system-outcome">
+            <strong>A practice that feels intentional at every touchpoint.</strong>
+            <span>The same standard from discovery to consultation to recovery and beyond.</span>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-    <h1>
-      Ancient wisdom.<br>
-      <span>Modern precision.</span>
-    </h1>
+    <section class="section" id="what-we-do">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-label">01 / What we do</div>
+          <div>
+            <h2 class="section-title">Not a medical marketing agency. A practice design company.</h2>
+            <p class="section-copy">A sophisticated medical practice should not look exceptional online and ordinary everywhere else. Asclethius creates <strong>one integrated brand, communication and technology system</strong> across the entire patient journey.</p>
+          </div>
+        </div>
 
-    <p>
-      A new system is being built.
-      Stay tuned for launch!
-    </p>
+        <div class="principle">
+          <article class="principle-card reveal">
+            <div class="num">THE PROBLEM</div>
+            <h3>Most practices are assembled in pieces.</h3>
+            <p>A website company, an SEO vendor, a logo designer, an EMR, a printer, generic handouts, disconnected forms and an assortment of automations. Each may work. Together, they rarely feel like one practice.</p>
+          </article>
+          <article class="principle-card reveal">
+            <div class="num">THE ASCLETHIUS MODEL</div>
+            <h3>Design the practice as one system.</h3>
+            <p>Strategy, identity, website, patient materials, search architecture, analytics and automation are developed around the same clinical business, patient population and standard of care.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-  </section>
+    <section class="section section-tight">
+      <div class="container">
+        <div class="services">
+          <article class="service reveal">
+            <div class="service-num">01</div>
+            <h3>Brand & Practice Identity</h3>
+            <p>Positioning and visual systems built around the actual practice — not a template category.</p>
+            <ul>
+              <li>Practice rebranding & naming</li>
+              <li>Visual identity & brand standards</li>
+              <li>Physician positioning & tone of voice</li>
+              <li>Photography and creative direction</li>
+            </ul>
+          </article>
 
-  <footer>© 2025 Asclethius</footer>
+          <article class="service reveal">
+            <div class="service-num">02</div>
+            <h3>Website & Digital Experience</h3>
+            <p>Custom medical websites designed around how patients actually evaluate physicians and practices.</p>
+            <ul>
+              <li>Information architecture & patient journeys</li>
+              <li>Procedure, physician and service systems</li>
+              <li>Gallery, portal, booking and forms integration</li>
+              <li>Performance, accessibility & conversion design</li>
+            </ul>
+          </article>
+
+          <article class="service reveal">
+            <div class="service-num">03</div>
+            <h3>Patient Experience & Communications</h3>
+            <p>The brand should not disappear the moment a patient schedules a consultation.</p>
+            <ul>
+              <li>Consultation and procedure packets</li>
+              <li>Pre-op, post-op and recovery materials</li>
+              <li>Email, SMS and portal communications</li>
+              <li>Pricing, financing and treatment guides</li>
+            </ul>
+          </article>
+
+          <article class="service reveal">
+            <div class="service-num">04</div>
+            <h3>Practice & Professional Materials</h3>
+            <p>One visual and communication standard across the business side of the practice.</p>
+            <ul>
+              <li>Referral and physician materials</li>
+              <li>Letterhead, presentations and media kits</li>
+              <li>Office signage and internal documents</li>
+              <li>Recruiting and onboarding materials</li>
+            </ul>
+          </article>
+
+          <article class="service reveal">
+            <div class="service-num">05</div>
+            <h3>Search, Content & Intelligence</h3>
+            <p>Search visibility and analytics engineered into the architecture instead of bolted on later.</p>
+            <ul>
+              <li>SEO architecture & migration preservation</li>
+              <li>Google, local and AI-search visibility</li>
+              <li>Physician-led editorial systems</li>
+              <li>Analytics, attribution and executive reporting</li>
+            </ul>
+          </article>
+
+          <article class="service reveal">
+            <div class="service-num">06</div>
+            <h3>AI, Automation & Practice Technology</h3>
+            <p>Technology used selectively where it improves patient experience, staff efficiency or decision-making.</p>
+            <ul>
+              <li>AI website concierge & intelligent FAQs</li>
+              <li>Inquiry routing and lead qualification</li>
+              <li>Content and review workflows</li>
+              <li>Practice dashboards and recurring intelligence</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="case-study">
+      <div class="container case">
+        <div class="case-copy reveal">
+          <div class="section-label">02 / Flagship case study</div>
+          <h2 class="section-title">Built first for ourselves.</h2>
+          <p>Sandel Duggal Plastic Surgery & Med Spa became the proving ground for a different approach to medical practice design: one that treats brand, patient experience, content, search, technology and operations as parts of the same system.</p>
+          <div class="case-points">
+            <div class="case-point">Deep procedure and physician content without sacrificing a refined patient experience.</div>
+            <div class="case-point">A unified surgical, medspa, gallery, resource and patient-navigation architecture.</div>
+            <div class="case-point">A modern technical foundation designed for performance, search preservation and continued expansion.</div>
+            <div class="case-point">A live practice — not a concept project — used every day by real patients and staff.</div>
+          </div>
+          <a class="btn btn-primary" href="https://sandelduggal.com/" target="_blank" rel="noopener">Explore Sandel Duggal <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <a class="browser reveal" href="https://sandelduggal.com/" target="_blank" rel="noopener" aria-label="Open Sandel Duggal website">
+          <div class="browser-top">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <div class="urlbar">sandelduggal.com</div>
+          </div>
+          <div class="browser-screen">
+            <div class="sd-nav">
+              <div class="sd-wordmark">SANDEL DUGGAL</div>
+              <div class="sd-links"><span>FACE</span><span>BREAST</span><span>BODY</span><span>MEDSPA</span><span>ABOUT</span><span>GALLERY</span></div>
+            </div>
+            <div class="sd-hero">
+              <div class="sd-kicker">Plastic Surgery · Med Spa · Annapolis</div>
+              <h4>A practice experience built around trust, expertise and clarity.</h4>
+              <p>Flagship implementation of the Asclethius approach to medical brand, digital experience, patient navigation and practice systems.</p>
+            </div>
+            <div class="sd-grid">
+              <div class="sd-tile"><span>Face</span></div>
+              <div class="sd-tile"><span>Nose</span></div>
+              <div class="sd-tile"><span>Body</span></div>
+              <div class="sd-tile"><span>Med Spa</span></div>
+            </div>
+            <div class="sd-band"><span>Physician authority</span><span>Patient experience</span><span>Search architecture</span><span>Technology</span></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-label">03 / The patient journey</div>
+          <div>
+            <h2 class="section-title">The brand continues after the click.</h2>
+            <p class="section-copy">A premium website is only one moment in a much longer relationship. We design the transitions between those moments so the practice feels considered from discovery through long-term care.</p>
+          </div>
+        </div>
+
+        <div class="journey reveal">
+          <article class="journey-step"><span>01</span><h3>Discover</h3><p>Search, AI answers, referrals, social proof and first impressions.</p></article>
+          <article class="journey-step"><span>02</span><h3>Evaluate</h3><p>Website, physician authority, galleries, procedures, reviews and educational content.</p></article>
+          <article class="journey-step"><span>03</span><h3>Consult</h3><p>Scheduling, intake, consultation materials, pricing and treatment planning.</p></article>
+          <article class="journey-step"><span>04</span><h3>Experience</h3><p>Procedure preparation, office environment, instructions, recovery and communication.</p></article>
+          <article class="journey-step"><span>05</span><h3>Return</h3><p>Follow-up, maintenance, loyalty, referrals, reviews and long-term relationship.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="container physician">
+        <div class="quote reveal">“We did not learn medical practices by selling to physicians. We built this from inside one.”</div>
+        <div class="physician-copy reveal">
+          <div class="section-label">04 / Why Asclethius</div>
+          <h2 class="section-title">Physician-led by design.</h2>
+          <p>Medical practices have operational realities that conventional agencies rarely experience firsthand: consultation flow, surgical and procedural education, before-and-after photography, patient expectations, EMR constraints, staff workflows, reputation, search history, consent, recovery communication and the tension between clinical depth and consumer clarity.</p>
+          <p>Asclethius begins with those realities. The objective is not simply to produce more marketing. It is to make the practice itself more coherent, more useful and more valuable to the people who interact with it.</p>
+          <div class="physician-tags">
+            <span class="tag">Brand strategy</span>
+            <span class="tag">Medical UX</span>
+            <span class="tag">Patient education</span>
+            <span class="tag">SEO migration</span>
+            <span class="tag">AI visibility</span>
+            <span class="tag">Practice automation</span>
+            <span class="tag">Analytics</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-label">05 / How we work</div>
+          <div>
+            <h2 class="section-title">Understand the practice before designing the solution.</h2>
+            <p class="section-copy">The exact engagement depends on what already exists. Some practices need a complete transformation. Others need a focused website rebuild, rebrand, patient-communication system or technology layer.</p>
+          </div>
+        </div>
+
+        <div class="process">
+          <article class="process-card reveal"><span>01 / DIAGNOSE</span><h3>Understand</h3><p>Practice goals, patient mix, brand position, workflows, digital footprint, search equity and operational constraints.</p></article>
+          <article class="process-card reveal"><span>02 / ARCHITECT</span><h3>Design</h3><p>Build the identity, information architecture, patient journeys and system strategy before styling individual pieces.</p></article>
+          <article class="process-card reveal"><span>03 / IMPLEMENT</span><h3>Build</h3><p>Create the website, materials, integrations and supporting infrastructure with measured launch controls.</p></article>
+          <article class="process-card reveal"><span>04 / EVOLVE</span><h3>Improve</h3><p>Use analytics, search data and practice feedback to refine the system rather than treating launch as the finish line.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-label">06 / Initial focus</div>
+          <div>
+            <h2 class="section-title">Built for physician-led private medicine.</h2>
+            <p class="section-copy">Our deepest firsthand experience is in aesthetic medicine, but the model extends naturally to high-trust, high-consideration medical practices where reputation, expertise and patient experience matter.</p>
+          </div>
+        </div>
+        <div class="audience reveal">
+          <span>Plastic Surgery</span><span>Facial Plastic Surgery</span><span>Dermatology</span><span>Cosmetic Dermatology</span><span>Med Spa</span><span>Aesthetic Medicine</span><span>Ophthalmology</span><span>ENT</span><span>Orthopedics</span><span>Concierge Medicine</span><span>Specialty Dentistry</span><span>Fertility & Women's Health</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="cta reveal">
+          <div class="eyebrow">Practice design for modern medicine</div>
+          <h2>Build the practice patients expect you to be.</h2>
+          <p>Whether the starting point is a website, a rebrand, patient-facing materials or a complete practice transformation, Asclethius can design the pieces as one system.</p>
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="https://sandelduggal.com/" target="_blank" rel="noopener">See what we built <span aria-hidden="true">↗</span></a>
+            <a class="btn btn-secondary" href="#top">Return to top</a>
+          </div>
+          <p class="contact-note">New-client inquiry details will be connected before public launch.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand">ASCLETHIUS</div>
+        <div class="footer-sub">Ancient wisdom. Modern precision.</div>
+      </div>
+      <div class="footer-right">
+        <div>Brand · Digital · Patient Experience · Technology</div>
+        <div>© <span id="year"></span> Asclethius. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
 </div>
 
 <script>
-/* Parallax */
-document.addEventListener("mousemove", (e)=>{
-  const x=(e.clientX/window.innerWidth-.5)*40;
-  const y=(e.clientY/window.innerHeight-.5)*40;
-  document.documentElement.style.setProperty("--px", x+"px");
-  document.documentElement.style.setProperty("--py", y+"px");
-});
+const root=document.documentElement;
+const menuBtn=document.querySelector('.menu-btn');
+const navLinks=document.querySelector('.nav-links');
+const year=document.getElementById('year');
+if(year) year.textContent=new Date().getFullYear();
 
-/* Starfield with connecting lines */
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
-
-let w, h, dpr, stars = [];
-
-function resize(){
-  dpr = Math.min(window.devicePixelRatio || 1, 2);
-  w = canvas.width = Math.floor(window.innerWidth * dpr);
-  h = canvas.height = Math.floor(window.innerHeight * dpr);
-  canvas.style.width = window.innerWidth + "px";
-  canvas.style.height = window.innerHeight + "px";
-
-  const count = Math.round(Math.min(window.innerWidth, 1400) / 7);
-  stars = Array.from({length: count}, ()=>({
-    x: Math.random()*w,
-    y: Math.random()*h,
-    r: (Math.random()*1.6 + 0.4) * dpr,
-    vx: (Math.random()-0.5) * 0.16 * dpr,
-    vy: (Math.random()-0.5) * 0.16 * dpr,
-    a: Math.random()*0.55 + 0.10
+if(menuBtn&&navLinks){
+  menuBtn.addEventListener('click',()=>{
+    const open=navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded',String(open));
+    menuBtn.textContent=open?'×':'☰';
+  });
+  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    navLinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+    menuBtn.textContent='☰';
   }));
 }
-window.addEventListener("resize", resize);
-resize();
 
-function tick(){
-  ctx.clearRect(0,0,w,h);
+document.addEventListener('mousemove',e=>{
+  const x=(e.clientX/window.innerWidth-.5)*28;
+  const y=(e.clientY/window.innerHeight-.5)*28;
+  root.style.setProperty('--px',x+'px');
+  root.style.setProperty('--py',y+'px');
+});
 
-  // stars
-  for (const s of stars){
-    s.x += s.vx;
-    s.y += s.vy;
+const revealObserver=('IntersectionObserver' in window)
+  ? new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },{threshold:.10,rootMargin:'0px 0px -40px 0px'})
+  : null;
 
-    if (s.x < -40) s.x = w + 40;
-    if (s.x > w + 40) s.x = -40;
-    if (s.y < -40) s.y = h + 40;
-    if (s.y > h + 40) s.y = -40;
+document.querySelectorAll('.reveal').forEach(el=>{
+  if(revealObserver) revealObserver.observe(el);
+  else el.classList.add('is-visible');
+});
 
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(230,236,255,${s.a})`;
-    ctx.fill();
+const canvas=document.getElementById('stars');
+const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(canvas&&!reduced){
+  const ctx=canvas.getContext('2d');
+  let w,h,dpr,stars=[];
+
+  function resize(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    w=canvas.width=Math.floor(window.innerWidth*dpr);
+    h=canvas.height=Math.floor(window.innerHeight*dpr);
+    canvas.style.width=window.innerWidth+'px';
+    canvas.style.height=window.innerHeight+'px';
+    const count=Math.round(Math.min(window.innerWidth,1500)/9);
+    stars=Array.from({length:count},()=>({
+      x:Math.random()*w,
+      y:Math.random()*h,
+      r:(Math.random()*1.25+.25)*dpr,
+      vx:(Math.random()-.5)*.09*dpr,
+      vy:(Math.random()-.5)*.09*dpr,
+      a:Math.random()*.38+.08
+    }));
   }
 
-  // connections
-  const max = 160 * dpr;
-  for (let i=0;i<stars.length;i++){
-    for (let j=i+1;j<stars.length;j++){
-      const a = stars[i], b = stars[j];
-      const dx = a.x - b.x, dy = a.y - b.y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < max){
-        const t = 1 - dist / max;
-        ctx.strokeStyle = `rgba(34,211,238,${t * 0.09})`;
-        ctx.lineWidth = 1 * dpr;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
+  function tick(){
+    ctx.clearRect(0,0,w,h);
+    for(const s of stars){
+      s.x+=s.vx;s.y+=s.vy;
+      if(s.x<-30)s.x=w+30;if(s.x>w+30)s.x=-30;
+      if(s.y<-30)s.y=h+30;if(s.y>h+30)s.y=-30;
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(230,236,255,${s.a})`;
+      ctx.fill();
+    }
+    const max=145*dpr;
+    for(let i=0;i<stars.length;i++){
+      for(let j=i+1;j<stars.length;j++){
+        const a=stars[i],b=stars[j];
+        const dx=a.x-b.x,dy=a.y-b.y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<max){
+          const t=1-dist/max;
+          ctx.strokeStyle=`rgba(34,211,238,${t*.055})`;
+          ctx.lineWidth=.7*dpr;
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
       }
     }
+    requestAnimationFrame(tick);
   }
 
-  requestAnimationFrame(tick);
+  window.addEventListener('resize',resize,{passive:true});
+  resize();tick();
 }
-tick();
 </script>
-
 </body>
 </html>
-
