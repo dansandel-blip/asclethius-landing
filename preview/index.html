@@ -18,6 +18,129 @@
       .then(function(r){ if(!r.ok) throw new Error('Preview unavailable'); return r.text(); })
       .then(function(html){
         html = html.replace('<head>', '<head><meta name="robots" content="noindex,nofollow,noarchive">');
+
+        const extraStyles = `
+<style>
+.investment-intro{max-width:820px;color:var(--mut);line-height:1.75;font-size:15px;margin:-24px 0 34px auto}
+.investment-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.investment-card{position:relative;padding:30px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(150deg,rgba(255,255,255,.04),rgba(255,255,255,.015));overflow:hidden}
+.investment-card::after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-95px;bottom:-110px;background:radial-gradient(circle,rgba(34,211,238,.08),transparent 68%)}
+.investment-card:nth-child(even)::after{background:radial-gradient(circle,rgba(139,92,246,.09),transparent 68%)}
+.investment-kicker{color:var(--mut2);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.investment-card h3{font-family:Cinzel,serif;font-size:23px;font-weight:500;line-height:1.25;margin:28px 0 10px}
+.investment-price{font-family:Cinzel,serif;font-size:31px;line-height:1.1;margin-bottom:16px;background:linear-gradient(95deg,#fff,#81eaff,#baa6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.investment-card p{color:var(--mut);font-size:13px;line-height:1.65;margin:0}
+.investment-note{color:var(--mut2);font-size:12px;line-height:1.65;margin:24px 0 0}
+.contact-form{max-width:900px;margin:36px auto 26px;display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left}
+.form-field{display:grid;gap:8px}
+.form-field.full{grid-column:1/-1}
+.form-field label{color:rgba(242,245,255,.72);font-size:11px;text-transform:uppercase;letter-spacing:.10em}
+.form-field input,.form-field select,.form-field textarea{width:100%;border:1px solid var(--line2);border-radius:13px;background:rgba(0,0,0,.24);color:#fff;padding:14px 15px;font:inherit;font-size:14px;outline:none;transition:border-color .18s ease,box-shadow .18s ease,background .18s ease}
+.form-field input,.form-field select{height:51px}
+.form-field textarea{min-height:145px;resize:vertical;line-height:1.5}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:rgba(34,211,238,.48);box-shadow:0 0 0 5px rgba(34,211,238,.07);background:rgba(0,0,0,.32)}
+.form-field select option{background:#0b0d14;color:#fff}
+.form-actions{grid-column:1/-1;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
+.form-actions button{cursor:pointer;font-family:inherit}
+.form-privacy{color:var(--mut2);font-size:11px;line-height:1.55;max-width:520px}
+@media(max-width:760px){.investment-grid,.contact-form{grid-template-columns:1fr}.form-field.full,.form-actions{grid-column:auto}.investment-intro{margin-top:0}}
+</style>`;
+        html = html.replace('</head>', extraStyles + '</head>');
+
+        const focusMarker = '<section class="section section-tight">\n      <div class="container">\n        <div class="section-head reveal">\n          <div class="section-label">06 / Initial focus</div>';
+        const pricingSection = `
+    <section class="section" id="investment">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-label">06 / Typical investment</div>
+          <div>
+            <h2 class="section-title">Clear enough to plan. Flexible enough to fit the practice.</h2>
+            <p class="section-copy">Every engagement is scoped around what already exists, what should be preserved and what actually needs to change. These ranges are intended to establish realistic budget expectations before a conversation begins.</p>
+          </div>
+        </div>
+        <div class="investment-grid">
+          <article class="investment-card reveal">
+            <div class="investment-kicker">Focused engagement</div>
+            <h3>Practice Upgrade</h3>
+            <div class="investment-price">$5k–$12k</div>
+            <p>A targeted rebrand, patient-material system, digital experience improvement, search project or other defined practice problem.</p>
+          </article>
+          <article class="investment-card reveal">
+            <div class="investment-kicker">Digital flagship</div>
+            <h3>Signature Website</h3>
+            <div class="investment-price">$15k–$30k</div>
+            <p>Custom website strategy, architecture, design and build with migration planning, search preservation, analytics and key practice integrations.</p>
+          </article>
+          <article class="investment-card reveal">
+            <div class="investment-kicker">Integrated transformation</div>
+            <h3>Brand + Digital</h3>
+            <div class="investment-price">$25k–$45k</div>
+            <p>Practice positioning and identity integrated with a new digital experience and a coordinated system of core patient-facing materials.</p>
+          </article>
+          <article class="investment-card reveal">
+            <div class="investment-kicker">End-to-end system</div>
+            <h3>Complete Practice Transformation</h3>
+            <div class="investment-price">$40k–$75k+</div>
+            <p>Brand, website, patient experience, communications, search intelligence, analytics and selected automation designed as one practice system.</p>
+          </article>
+        </div>
+        <p class="investment-note">Ongoing search, analytics, content, optimization and automation support can be added where useful. Final scope and investment are established after an initial practice review.</p>
+      </div>
+    </section>
+`;
+        if(html.includes(focusMarker)){
+          html = html.replace(focusMarker, pricingSection + focusMarker.replace('06 / Initial focus','07 / Initial focus'));
+        }
+
+        const contactLead = 'Whether the starting point is a website, a rebrand, patient-facing materials or a complete practice transformation, Asclethius can design the pieces as one system.</p>\n          <div class="cta-actions">';
+        const contactReplacement = `Whether the starting point is a website, a rebrand, patient-facing materials or a complete practice transformation, Asclethius can design the pieces as one system.</p>
+          <form class="contact-form" action="https://formsubmit.co/dansandel@gmail.com" method="POST">
+            <input type="hidden" name="_subject" value="New Asclethius practice inquiry">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://www.asclethius.com/preview/?submitted=1#contact">
+            <input type="hidden" name="_url" value="https://www.asclethius.com/preview/">
+            <div class="form-field">
+              <label for="as-name">Name</label>
+              <input id="as-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="form-field">
+              <label for="as-email">Email</label>
+              <input id="as-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="form-field">
+              <label for="as-practice">Practice / organization</label>
+              <input id="as-practice" name="practice" type="text" autocomplete="organization" required>
+            </div>
+            <div class="form-field">
+              <label for="as-site">Current website <span style="text-transform:none;letter-spacing:0;opacity:.6">(optional)</span></label>
+              <input id="as-site" name="website" type="url" inputmode="url" placeholder="https://">
+            </div>
+            <div class="form-field full">
+              <label for="as-interest">What are you considering?</label>
+              <select id="as-interest" name="project_interest" required>
+                <option value="" selected disabled>Select an area</option>
+                <option>Website & digital experience</option>
+                <option>Brand or practice rebrand</option>
+                <option>Patient-facing materials & communications</option>
+                <option>Search, content & analytics</option>
+                <option>AI & practice automation</option>
+                <option>Complete practice transformation</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+            <div class="form-field full">
+              <label for="as-message">Tell us about the practice and what you want to improve</label>
+              <textarea id="as-message" name="message" required></textarea>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Begin a conversation <span aria-hidden="true">→</span></button>
+              <div class="form-privacy">For practice and professional inquiries only. Please do not submit patient information or protected health information.</div>
+            </div>
+          </form>
+          <div class="cta-actions">`;
+        if(html.includes(contactLead)) html = html.replace(contactLead, contactReplacement);
+        html = html.replace('<p class="contact-note">New-client inquiry details will be connected before public launch.</p>', '<p class="contact-note">Inquiries are delivered directly to Asclethius. The form uses spam protection and requires no patient information.</p>');
+
         document.open();
         document.write(html);
         document.close();
