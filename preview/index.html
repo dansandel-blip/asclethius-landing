@@ -57,9 +57,22 @@
 .case-live-footer{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 26px;border-top:1px solid rgba(255,255,255,.08);font-size:12px}
 .case-live-footer span{color:var(--mut2)}
 .case-live-footer strong{font-weight:600;color:#a8f3ff}
-@media(max-width:760px){.investment-grid,.contact-form{grid-template-columns:1fr}.form-field.full,.form-actions{grid-column:auto}.investment-intro{margin-top:0}.case-live-card{min-height:390px}.case-live-body{padding:30px}.case-live-header,.case-live-footer{padding-left:22px;padding-right:22px}.case-live-header span:last-child{display:none}}
+.asclethius-lockup{display:inline-flex;flex-direction:column;align-items:flex-start;line-height:1;text-decoration:none}
+.asclethius-word{font-family:Cinzel,serif;font-size:17px;font-weight:500;letter-spacing:.15em;color:#fff;white-space:nowrap}
+.asclethius-tm{font-family:Inter,system-ui,sans-serif;font-size:.42em;vertical-align:super;letter-spacing:0;margin-left:2px;color:rgba(255,255,255,.72)}
+.asclethius-tagline{font-family:Inter,system-ui,sans-serif;font-size:8px;font-weight:400;letter-spacing:.11em;text-transform:uppercase;color:rgba(229,235,255,.46);margin-top:6px;white-space:nowrap}
+.footer-lockup .asclethius-word{font-size:20px}
+.footer-lockup .asclethius-tagline{font-size:9px;margin-top:8px}
+@media(max-width:760px){.investment-grid,.contact-form{grid-template-columns:1fr}.form-field.full,.form-actions{grid-column:auto}.investment-intro{margin-top:0}.case-live-card{min-height:390px}.case-live-body{padding:30px}.case-live-header,.case-live-footer{padding-left:22px;padding-right:22px}.case-live-header span:last-child{display:none}.asclethius-tagline{display:none}.footer-lockup .asclethius-tagline{display:block}}
 </style>`;
         html = html.replace('</head>', extraStyles + '</head>');
+
+        const navBrand = '<a class="brand" href="#top" aria-label="Asclethius home">ASCLETHIUS</a>';
+        const navLockup = `<a class="brand asclethius-lockup" href="#top" aria-label="Asclethius home"><span class="asclethius-word">ASCLETHIUS<span class="asclethius-tm">™</span></span><span class="asclethius-tagline">Practice design for modern medicine.</span></a>`;
+        if(html.includes(navBrand)) html = html.replace(navBrand, navLockup);
+        const footerBrand = '<div class="footer-brand">ASCLETHIUS</div>\n        <div class="footer-sub">Ancient wisdom. Modern precision.</div>';
+        const footerLockup = `<div class="asclethius-lockup footer-lockup"><span class="asclethius-word">ASCLETHIUS<span class="asclethius-tm">™</span></span><span class="asclethius-tagline">Practice design for modern medicine.</span></div>`;
+        if(html.includes(footerBrand)) html = html.replace(footerBrand, footerLockup);
 
         const focusMarker = '<section class="section section-tight">\n      <div class="container">\n        <div class="section-head reveal">\n          <div class="section-label">06 / Initial focus</div>';
         const pricingSection = `
